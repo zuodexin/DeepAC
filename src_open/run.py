@@ -38,6 +38,10 @@ def deploy_deepac(cfg):
 def demo(cfg):
     from .tools.demo import main
     main(cfg)
+    
+def refine_bop(cfg):
+    from .tools.refine_bop import main
+    main(cfg)
 
 @hydra.main(config_path='configs/', config_name='config.yaml')
 def main(cfg: DictConfig):

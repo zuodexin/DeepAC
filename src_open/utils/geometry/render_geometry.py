@@ -213,8 +213,9 @@ class RenderGeometry:
                 image_size=(viewer.image_size[1], viewer.image_size[0]),#viewer.image_size,
                 blur_radius=0.0,
                 faces_per_pixel=1,
-                bin_size=0 # shen
+                # bin_size=0 # shen
             )
+            raster_settings.max_faces_per_bin=int(1e5)
 
             self.depth_rasterizers[body_name] = \
                 MeshRasterizer(cameras=render_camera, raster_settings=raster_settings)

@@ -74,8 +74,8 @@ def generate_random_aa_and_t(min_offset_angle, max_offset_angle, min_offset_tran
 # return: (4) or (b, 4), [center_x, center_y, w, h]
 def get_bbox_from_p2d(p2d):
 
-    bbox_min, _ = torch.min(p2d, dim=-2)
-    bbox_max, _ = torch.max(p2d, dim=-2)
+    bbox_min, _ = torch.min(p2d.clamp(min=0), dim=-2)
+    bbox_max, _ = torch.max(p2d.clamp(min=0), dim=-2)
 
     bbox_center = (bbox_min + bbox_max) / 2
     bbox_wh = bbox_max - bbox_min

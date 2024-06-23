@@ -15,7 +15,6 @@ from ..utils.geometry.wrappers import Pose, Camera
 from ..utils.draw_tutorial import draw_vertices_to_obj
 
 def preprocess(conf, obj_dirs, obj_paths):
-
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     n_obj = len(obj_paths)

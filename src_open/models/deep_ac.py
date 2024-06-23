@@ -4,6 +4,7 @@ import torch.nn as nn
 import numpy as np
 import cv2
 import math
+import ipdb
 
 from .base_model import BaseModel
 from ..models import get_model
@@ -562,21 +563,22 @@ class DeepAC(BaseModel):
 
         image = data['image']
         B, _, H, W = image.shape
-        features = self.extractor._forward(image)
+        features = self.extractor._forward(image) # list of tensors, len(features) = 3
+        # (b, 16, h/4, w/4) (b, 16, h/2, w/2) (b, 32, h, w)
         
         if tracking == False:
             fore_hist, back_hist = self.init_histogram(data)
         else:
-            fore_hist = data['fore_hist']
-            back_hist = data['back_hist']
+            fore_hist = data['fore_hist'] # (B, 32768)
+            back_hist = data['back_hist'] # (B, 32768)
 
         data['opt_body2view_pose'] = []
-        camera = data['camera']
+        camera = data['camera'] # (1), src_open.utils.geometry.wrappers.Camera
         closest_orientations_in_body = data['closest_orientations_in_body']
         closest_template_views = data['closest_template_views']
         optimizer = self.optimizer
         init_body2view_pose = data['body2view_pose']
-        for it, s in enumerate(self.conf.scales):
+        for it, s in enumerate(self.conf.scales): # self.conf.scales: [2, 2, 1, 1, 0, 0]
             image_scale = float(2 ** s)
             camera_pyr = camera.scale(1 / image_scale)
             h_cur = H // int(image_scale)
@@ -585,7 +587,7 @@ class DeepAC(BaseModel):
             feature = features[-(s+1)]
 
             index = get_closest_template_view_index(init_body2view_pose, closest_orientations_in_body)
-            template_view = torch.stack([closest_template_views[b][index[b]] for b in range(closest_template_views.shape[0])])
+            template_view = torch.stack([closest_template_views[b][index[b]] for b in range(closest_template_views.shape[0])]) #(B, 200, 8)
             
             B, A = self.run_iteration(image_pyr, feature, init_body2view_pose._data, camera_pyr._data, template_view, fore_hist, back_hist, it)
 

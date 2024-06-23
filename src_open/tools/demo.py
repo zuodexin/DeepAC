@@ -9,6 +9,7 @@ import warnings
 import pickle
 import glob
 from tqdm import tqdm
+import ipdb
 
 from ..utils.geometry.wrappers import Pose, Camera
 from ..models import get_model
@@ -120,13 +121,13 @@ def main(cfg):
                                                     foreground_distance, background_distance, True)
 
         data = {
-            'image': img[None].cuda(),
-            'camera': camera[None].cuda(),
-            'body2view_pose': init_pose[None].cuda(),
-            'closest_template_views': closest_template_views[None].cuda(),
-            'closest_orientations_in_body': closest_orientations_in_body[None].cuda(),
-            'fore_hist': total_fore_hist.cuda(),
-            'back_hist': total_back_hist.cuda()
+            'image': img[None].cuda(), # (3, 320, 320)
+            'camera': camera[None].cuda(), # (1), src_open.utils.geometry.wrappers.Camera
+            'body2view_pose': init_pose[None].cuda(), # (1), src_open.utils.geometry.wrappers.Pose
+            'closest_template_views': closest_template_views[None].cuda(), # (5, 200, 8)
+            'closest_orientations_in_body': closest_orientations_in_body[None].cuda(), # (5, 3)
+            'fore_hist': total_fore_hist.cuda(), # (1, 32768)
+            'back_hist': total_back_hist.cuda()  # (1, 32768)
         }
         pred = model._forward(data, visualize=False, tracking=True)
 

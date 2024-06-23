@@ -1,0 +1,23 @@
+# @package _global_
+type: refine_bop
+
+save_dir: ${work_dir}/workspace/refine_bop
+load_cfg: ${work_dir}/workspace/train_bop_deepac/logs-2024-01-08-15-52-47/train_cfg.yml
+load_model: ${work_dir}/workspace/train_bop_deepac/logs-2024-01-08-15-52-47/model_last.ckpt
+# -----------------
+
+bop_datasets_path: datasets/BOP
+dataset: tless
+split: test
+split_type: primesense
+prediction_path: ../PoseLab/logs_nfs/refine/cir/tless_obj_all_refine_xyz_seg/version_7026/eval_render4/tless_obj_all_refine_xyz_seg_7026-tless-test-primesense.csv
+detection_threshold: 0.1
+choose_obj: null
+
+
+geometry_unit_in_meter: 0.001
+output_video: true
+output_size: [320, 320]
+
+
+gpu_id: '0' # 0, 1

@@ -6,7 +6,8 @@ save_dir: ${work_dir}/workspace/train_bop_deepac
 data:
   name: BOP
   dataset_dir: datasets/BOP
-  sub_dataset_dir: ['hope', 'icbin', 'icmi', 'tless', 'tudl', 'lm', 'ycbv', 'ruapc']
+  # sub_dataset_dir: ['hope', 'icbin', 'icmi', 'tless', 'tudl', 'lm', 'ycbv', 'ruapc']
+  sub_dataset_dir: ['tless']
   sub_dataset_model_dir: ['models', 'models', 'models', 'models_cad', 
                           'models', 'models', 'models_eval', 'models']
   sub_dataset_val_dir: ['val', 'test', 'test', 'test_primesense', 
@@ -119,7 +120,7 @@ data:
   max_offset_translation: 0.025 # 0.015, 0.025
   train_batch_size_per_gpu: 48
   val_batch_size_per_gpu: 48
-  workers_per_gpu: 2
+  workers_per_gpu: 1
   seed: 1
 
 models:
@@ -189,4 +190,4 @@ trainer:
   dataset_callback_fn: sample_new_items
 
 device:
-  gpu_ids: [ 0, 1, 2, 3 ]
+  gpu_ids: [ 0, 1]
